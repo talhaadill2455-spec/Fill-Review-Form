@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review Form</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+        }
+
+        #introPage {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .start-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 50px;
+            border: none;
+            background: #87CEEB;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 700px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .steps {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: #333;
+            color: white;
+            margin-right: 5px;
+        }
+
+        .active-step {
+            background: green;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .active-form {
+            display: block;
+        }
+
+        input {
+            width: 60%;
+            padding: 10px;
+            margin: 10px 0;
+            display: block;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: navy;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #successPage {
+            display: none;
+            text-align: center;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="introPage">
+    <h1>Fill Review Form</h1>
+    <hr>
+
+    <p>This form is designed to take input for our current survey.</p>
+    <p>Please fill all sections carefully.</p>
+
+    <h2>This form contains following sections:</h2>
+    <p>Account Details</p>
+    <p>Personal Details</p>
+    <p>Review Section</p>
+
+    <p>Click below to start</p>
+    <button class="start-btn" onclick="startForm()">→</button>
+</div>
+
+<div class="container" id="formPage">
+
+    <div class="steps">
+        <div class="step active-step">Step 1</div>
+        <div class="step">Step 2</div>
+        <div class="step">Step 3</div>
+    </div>
+
+    <div class="form-step active-form">
+        <h2>Account Details</h2>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Confirm Password">
+
+        <button onclick="nextStep()">Next</button>
+    </div>
+
+    <div class="form-step">
+        <h2>Personal Details</h2>
+        <input type="text" placeholder="First Name">
+        <input type="text" placeholder="Last Name">
+        <input type="text" placeholder="CNIC">
+
+        <button onclick="prevStep()">Back</button>
+        <button onclick="nextStep()">Next</button>
+    </div>
+
+    <div class="form-step">
+        <h2>Review & Submit</h2>
+        <p>Check your details before submit.</p>
+
+        <button onclick="prevStep()">Back</button>
+        <button onclick="submitForm()">Submit</button>
+    </div>
+
+</div>
+
+<div id="successPage">
+    <h1>Form Has Been Submitted Successfully ✅</h1>
+    <p>Thank you for filling the review form.</p>
+</div>
+
+<script>
+    let currentStep = 0;
+
+    let formSteps = document.querySelectorAll(".form-step");
+    let steps = document.querySelectorAll(".step");
+
+    function startForm() {
+        document.getElementById("introPage").style.display = "none";
+        document.getElementById("formPage").style.display = "block";
+    }
+
+    function showStep() {
+        formSteps.forEach(step => step.classList.remove("active-form"));
+        steps.forEach(step => step.classList.remove("active-step"));
+
+        formSteps[currentStep].classList.add("active-form");
+        steps[currentStep].classList.add("active-step");
+    }
+
+    function nextStep() {
+        if (currentStep === 0) {
+            let email = document.querySelectorAll("input")[0].value;
+            let password = document.querySelectorAll("input")[1].value;
+            let confirmPassword = document.querySelectorAll("input")[2].value;
+
+            if (email === "" || password === "" || confirmPassword === "") {
+                alert("Please fill all Account Details");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match");
+                return;
+            }
+        }
+
+        if (currentStep === 1) {
+            let firstName = document.querySelectorAll("input")[3].value;
+            let lastName = document.querySelectorAll("input")[4].value;
+            let cnic = document.querySelectorAll("input")[5].value;
+
+            if (firstName === "" || lastName === "" || cnic === "") {
+                alert("Please fill all Personal Details");
+                return;
+            }
+        }
+
+        if (currentStep < formSteps.length - 1) {
+            currentStep++;
+            showStep();
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            showStep();
+        }
+    }
+
+    function submitForm() {
+        document.getElementById("formPage").style.display = "none";
+        document.getElementById("successPage").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
